@@ -1,0 +1,126 @@
+<!doctype html>
+<!--[if lt IE 9]>  <html class="ie lt-ie9 ie8"> <![endif]-->
+<!--[if IE 9]>     <html class="ie ie9"> <![endif]-->
+<!--[if !IE]><!--> <html> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <title>Mi admin panel</title>
+  <link rel="shortcut icon" href="/img/favicon.ico">
+  <!-- get calcite-web css from the cdn (use latest version) -->
+  <link rel="stylesheet" href="https://s3-us-west-1.amazonaws.com/patterns.esri.com/files/calcite-web/1.0.0-beta.31/css/calcite-web.min.css">
+  <!--[if lt IE 9]>
+  <script src="/assets/javascripts/libs/selectivizr.js"></script>
+  <script src="/assets/javascripts/libs/html5shiv.js"></script>
+  <![endif]-->
+  <style>
+  body{
+    background-color: white
+  }
+  </style>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="grid-container">
+      <div class="column-24">
+        <!-- desktop sized navigation -->
+        <div class="tablet-hide">
+          <!-- logo / home -->
+          <a href="#" class="top-nav-title">Mi Backoffice</a>
+          <!-- primary navigation sections -->
+          <nav class="top-nav-list" role="navigation" aria-labelledby="topnav">
+            <a class="top-nav-link " href="panel-extension.html">Editor de web map</a>
+            <a class="top-nav-link" href="panel-params.html">Otros parámetros</a>
+            <a class="top-nav-link is-active" href="#">Formulario</a>
+          </nav>
+          <!-- user specific dropdowns -->
+          <nav class="class-top-nav-list right" role="navigation" aria-labelledby="usernav">
+            <a class="top-nav-link icon-ui-search" href="#">Buscar</a>
+            <a class="top-nav-link icon-ui-collection margin-left-1" href="#">Mis apps</a>
+            <a class="top-nav-link icon-ui-user margin-left-1" href="#">Cerrar sesión</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="grid-container">
+
+    <form action="" method="post" class="leader-1">
+      <div class="column-12">
+        <label>
+          Name<span class="text-red">*</span>
+          <input type="text" id="name" required aria-required="true"/>
+          <span class="form-hint">
+            <span class="form-hint-text">Just type some letters</span>
+            <span class="form-hint-icon"></span>
+          </span>
+        </label>
+
+        <label>
+          Address
+          <input type="text"/>
+        </label>
+
+        <label>
+          Card Type
+          <select>
+            <option value="">VISA</option>
+            <option value="">Mastercard</option>
+          </select>
+        </label>
+
+        <label>
+          Credit Card Number
+          <input type=text pattern="[0-9]{13,16}">
+        </label>
+
+      </div>
+      <div class="column-12">
+        <label>
+          E-mail<span class="text-red">*</span>
+          <input type="email" required aria-required="true"/>
+          <span class="form-hint">
+            <span class="form-hint-text">name@domain.tld</span>
+            <span class="form-hint-icon"></span>
+          </span>
+        </label>
+
+
+
+        <label>
+          Message
+          <textarea></textarea>
+        </label>
+
+        <fieldset class="fieldset-radio">
+          <legend>Subscribe to Newsletter</legend>
+          <label>
+            <input type="radio" name="subscribe" value="yeah">Please
+          </label>
+          <label>
+            <input type="radio" name="subscribe" value="nope" checked>No Way
+          </label>
+        </fieldset>
+
+
+
+
+
+      </div>
+      <div class="column-24">
+        <button type="submit" class="btn-fill">Submit</button>
+      </div>
+    </form>
+
+  </div>
+
+  <!-- get calcite-web js from the cdn (use latest version) -->
+  <script src="https://s3-us-west-1.amazonaws.com/patterns.esri.com/files/calcite-web/1.0.0-beta.31/js/calcite-web.min.js"></script>
+
+  <!-- interactive patterns need to be initialized -->
+  <script>
+  calcite.init()
+  </script>
+</body>
+</html>

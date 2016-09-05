@@ -1,0 +1,324 @@
+<!doctype html>
+<!--[if lt IE 9]>  <html class="ie lt-ie9 ie8"> <![endif]-->
+<!--[if IE 9]>     <html class="ie ie9"> <![endif]-->
+<!--[if !IE]><!--> <html> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <title>Mi admin panel</title>
+  <link rel="shortcut icon" href="/img/favicon.ico">
+  <!-- get calcite-web css from the cdn (use latest version) -->
+  <link rel="stylesheet" href="https://s3-us-west-1.amazonaws.com/patterns.esri.com/files/calcite-web/1.0.0-beta.31/css/calcite-web.min.css">
+  <!--[if lt IE 9]>
+  <script src="/assets/javascripts/libs/selectivizr.js"></script>
+  <script src="/assets/javascripts/libs/html5shiv.js"></script>
+  <![endif]-->
+
+  <!-- get calcite-web js from the cdn (use latest version) -->
+  <script src="https://s3-us-west-1.amazonaws.com/patterns.esri.com/files/calcite-web/1.0.0-beta.31/js/calcite-web.min.js"></script>
+  <link rel="stylesheet" href="https://js.arcgis.com/3.17/dijit/themes/claro/claro.css">
+  <link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/css/esri.css">
+
+  <style>
+    body{
+      background-color: white
+    }
+    .esri-bitmap {
+      max-width: none;
+      transform-origin: top left;
+    }
+    html, body, #viewDiv {
+      height: 100%; width: 100%; margin: 0; padding: 0;
+    }
+    #viewDiv{
+      height: 500px;
+    }
+    .modal-content{
+      max-width: 90%;
+      width: 90%;
+    }
+    .modal-content iframe{
+      width:100%;
+      height:100%;
+      border:1px solid #ccc;
+    }
+
+    path[data-classbreak="custom-style"]{
+      border:1px solid black;
+      fill-opacity: 1;
+      stroke-width: 4;
+      stroke: rgb(220,20,60);
+      stroke-opacity: 1;
+    }
+    .code{
+      font-family: Verdana;
+      font-size: 12px;
+      height: 250px;
+    }
+    .dropdown-content{display:none;}
+
+  </style>
+
+  <script>
+  var dojoConfig = (function () {
+      return {
+          async: true,
+          isDebug: true,
+          parseOnLoad: false,
+          packages: [
+              {
+                  name: 'jquery',
+                  location: 'http://ajax.googleapis.com/ajax/libs/jquery/1.11.1',
+                  main: 'jquery'
+              }
+          ],
+          paths:{
+            "jquery":"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1",
+            "jsrender":"http://www.jsviews.com/download/jsrender"
+          },
+          shim:{
+            deps:["jquery"], // jquery.highlight dependeps on jquery so it will load after jquery has been loaded
+            exports:"jsrender"
+          }
+      };
+  })();
+  </script>
+
+  <script src="https://js.arcgis.com/3.17/"></script>
+  <script>
+  var map;
+  require([
+      'esri/arcgis/utils',
+      'esri/layers/FeatureLayer',
+      'esri/request',
+      'jquery',
+      'dojo/on',
+      'esri/Color',
+      'esri/renderers/SimpleRenderer',
+      'esri/symbols/SimpleMarkerSymbol',
+      'esri/symbols/SimpleLineSymbol',
+      'esri/symbols/SimpleFillSymbol',
+      'esri/layers/CSVLayer',
+      'esri/layers/KMLLayer',
+      'jsrender',
+      'dojo/domReady!'
+    ], function(
+      arcgisUtils,
+      FeatureLayer,
+      esriRequest,
+      $,
+      on,
+      Color,
+      SimpleRenderer,
+      SimpleMarkerSymbol,
+      SimpleLineSymbol,
+      SimpleFillSymbol,
+      CSVLayer,
+      KMLLayer
+    ) {
+      var webmapId = '0ad39d05c3834649bb48397afc56a6b2';
+
+      arcgisUtils.createMap(webmapId,'viewDiv').then(function(response){
+        map = response.map;
+
+        csv = new CSVLayer('csv/playas.csv',{
+              columnDelimiter: ',',
+              latitudeFieldName: 'lat',
+              longitudeFieldName: 'long',
+              id: 'csv'
+        });
+        map.addLayer(csv);
+        csv.setVisibility(false);
+
+        kml = new KMLLayer('https://developers.google.com/kml/documentation/KML_Samples.kml',{id: 'kml'});
+        map.addLayer(kml);
+        kml.setVisibility(false);
+      });
+
+      $('#csv').click(function(){
+        if($(this).is(':checked')){
+          map.getLayer('csv').setVisibility(true);
+        }else{
+          map.getLayer('csv').setVisibility(false);
+        }
+      });
+      $('#kml').click(function(){
+        if($(this).is(':checked')){
+          map.getLayer('kml').setVisibility(true);
+        }else{
+          map.getLayer('kml').setVisibility(false);
+        }
+      });
+
+      var url = 'http://www.arcgis.com/sharing/rest/content/items/' + webmapId + '/data';
+
+      applyMarker = function(layerId){
+        var l = map.getLayer(layerId);
+        if(!l){
+          l=map.getLayer(layerId+'_0');
+        }
+
+        eval($('#'+layerId).val());
+
+        var renderer = new SimpleRenderer(marker);
+
+        l.setRenderer(renderer);
+        l.refresh();
+      }
+
+      esriRequest({
+        url: url,
+        content: { f: 'json' },
+        handleAs: 'json'
+      }).then(function(response){
+        console.log('response=',response);
+
+        var template = $.templates('#theTmpl');
+        var optionTmpl = $.templates('#optionTmpl');
+
+        for(var i=0; i< response.operationalLayers.length;i++){
+
+          var data = {
+            'title': response.operationalLayers[i].title,
+            'id': response.operationalLayers[i].id
+          };
+          if(response.operationalLayers[i].featureCollection){
+            data.type = 'featureCollection';
+          }else{
+            data.type = 'featureLayer';
+          }
+
+          var htmlOutput = optionTmpl.render(data);
+          $('#dropdown-animation').append(htmlOutput);
+
+          htmlOutput = template.render(data);
+          $('#animations').append(htmlOutput);
+
+        }
+        $('#dropdown-animation a').click(function(e){
+          e.preventDefault();
+          var id = $(this).data('id');
+          $('#animations > div').hide();
+          $('#content-'+id).show();
+        });
+
+
+      });
+    });
+  </script>
+  </script>
+</head>
+<body>
+  <header class="top-nav">
+    <div class="grid-container">
+      <div class="column-24">
+        <!-- desktop sized navigation -->
+        <div>
+          <!-- logo / home -->
+          <a href="#" class="top-nav-title">Mi Backoffice</a>
+          <!-- primary navigation sections -->
+          <nav class="top-nav-list" role="navigation" aria-labelledby="topnav">
+            <a class="top-nav-link " href="panel-extension.html">Editor de web map</a>
+            <a class="top-nav-link is-active" href="panel-params.html">Otros parámetros</a>
+            <a class="top-nav-link " href="panel-extension-form.html">Formulario</a>
+          </nav>
+          <!-- user specific dropdowns -->
+          <nav class="class-top-nav-list right" role="navigation" aria-labelledby="usernav">
+            <a class="top-nav-link icon-ui-search" href="#">Buscar</a>
+            <a class="top-nav-link icon-ui-collection margin-left-1" href="#">Mis apps</a>
+            <a class="top-nav-link icon-ui-user margin-left-1" href="#">Cerrar sesión</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="grid-container">
+    <div class="column-8">
+      <div class="leader-1">
+        <aside class="js-accordion accordion trailer-1">
+          <div class="accordion-section is-active">
+            <h4 class="accordion-title">Simbología (avanzado)</h4>
+            <div class="accordion-content">
+              <div class="padding-left-1 leader-1 padding-right-1 trailer-1">
+                <a class="btn btn-fill" href="https://developers.arcgis.com/javascript/3/samples/playground/" target="_blank">Symbol Playground</a>
+                <p class="text-center trailer-0">
+                  <small>
+                    <a href="https://developers.arcgis.com/javascript/3/jshelp/inside_styling_svg.html" target="_blank">
+                      Animaciones con SVG y CSS
+                    </a>
+                  </small>
+                </p>
+                <div class="dropdown js-dropdown btn-fill">
+                  <!-- extends side-nav -->
+                  <button class="btn btn-clear btn-fill dropdown-btn js-dropdown-toggle" tabindex="0" aria-haspopup="true" aria-expanded="false">Selecciona una capa</button>
+                  <!-- extends side-nav -->
+                  <nav class="dropdown-menu modifier-class btn-fill" role="menu" id="dropdown-animation">
+                    <!-- extends side-nav-link -->
+                  </nav>
+                </div>
+                <div id="animations"></div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-section">
+            <h4 class="accordion-title ">Capas personalizadas</h4>
+            <div class="accordion-content">
+              <fieldset class="fieldset-checkbox padding-left-1 leader-1">
+                <label>
+                  <input type="checkbox" id="csv"> Playas de mayorca (CSV)
+                </label>
+                <label>
+                  <input type="checkbox" id="kml"> KML Sample (KML)
+                </label>
+              </fieldset>
+            </div>
+          </div>
+          <div class="accordion-section">
+            <h4 class="accordion-title">Cargar notas de mapa</h4>
+            <div class="accordion-content">
+              <div class="padding-left-1 leader-1 padding-right-1">
+                <span class="btn btn-fill trailer-1 btn-green">Add customers (pending)</span>
+                <small><strong>Recomendación:</strong> <br>Mejor crear un servicio sincronizado en 2º plano.</small>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+      <button class="btn btn-primary btn-fill trailer-1">Save</button>
+    </div>
+    <div class="column-16">
+
+
+      <div id="viewDiv"></div>
+
+
+    </div>
+  </div>
+
+  <script id="optionTmpl" type="text/x-jsrender">
+    <a href="#" class="dropdown-link" data-id="{{:id}}" role="menu-item">{{:title}}</a>
+  </script>
+
+  <script id="theTmpl" type="text/x-jsrender">
+
+        <div class="padding-left-1 leader-1 padding-right-1 trailer-1 dropdown-content" id="content-{{:id}}">
+          {{:title}}
+          {{if type=="featureLayer"}}
+          <textarea class="code" id="{{:id}}">var marker = new SimpleMarkerSymbol();
+marker.setPath("M16,3.5c-4.142,0-7.5,3.358-7.5,7.5c0,4.143,7.5,18.121,7.5,18.121S23.5,15.143,23.5,11C23.5,6.858,20.143,3.5,16,3.5z M16,14.584c-1.979,0-3.584-1.604-3.584-3.584S14.021,7.416,16,7.416S19.584,9.021,19.584,11S17.979,14.584,16,14.584z");
+marker.setColor(new Color([92, 92, 92, 1]));
+marker.setAngle(-1);
+marker.setStyle(SimpleMarkerSymbol.STYLE_PATH);</textarea>
+          {{else type=="featureCollection"}}
+          <textarea class="code" id="{{:id}}">var marker = new SimpleFillSymbol();</textarea>
+          {{/if}}
+          <button class="btn btn-green btn-fill btn-small" onclick="applyMarker('{{:id}}')">Aplicar</button>
+        </div>
+  </script>
+
+  <script>
+  calcite.init()
+  </script>
+</body>
+</html>
