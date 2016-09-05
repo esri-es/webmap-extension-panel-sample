@@ -23,17 +23,6 @@
     body{
       background-color: white
     }
-    #custom-nav{
-      background-color: #F7F8F8 !important;
-      border-bottom: 1px solid #ccc;
-      border-top: 1px solid #ccc;
-      padding: 4px 14px;
-    }
-    .custom-layers a{
-      font-family:Verdana, Helvetica, sans-serif;
-      font-size:12px;/*    position: absolute;
-    top: 72px;
-  left: 360px;*/}
     </style>
   </head>
   <body>
@@ -46,9 +35,9 @@
             <a href="#" class="top-nav-title">Mi Backoffice</a>
             <!-- primary navigation sections -->
             <nav class="top-nav-list" role="navigation" aria-labelledby="topnav">
-              <a class="top-nav-link is-active" href="#">Editor de web map</a>
+              <a class="top-nav-link" href="#">Editor de web map</a>
               <a class="top-nav-link" href="panel-params.html">Otros parámetros</a>
-              <a class="top-nav-link " href="panel-extension-renderers.html">Renderizadores</a>
+              <a class="top-nav-link is-active" href="panel-extension-renderers.html">Renderizadores</a>
               <a class="top-nav-link" href="panel-extension-form.html">Formulario</a>
             </nav>
             <!-- user specific dropdowns -->
@@ -62,27 +51,7 @@
       </div>
     </header>
 
-    <div class="js-modal modal-overlay modifier-class" data-modal="foo">
-      <div class="modal-content column-12" role="dialog" aria-labelledby="modal" role="dialog">
-        <a class="js-modal-toggle icon-ui-close icon-flush font-size-1 right" href="#" aria-label="close-modal" ></a>
-        <h3 class='trailer-half'>Modal!</h3>
-        <p>Pulsa: Add-> Add Layer from Web.</p>
-
-        <div class="text-right">
-            <button class="btn js-modal-toggle">okay</button>
-            <button class="btn-clear js-modal-toggle">cancel</button>
-        </div>
-      </div>
-    </div>
-    <div id="custom-nav" class="custom-layers">
-      <a class="js-modal-toggle btn btn-small btn-transparent icon-ui-collection" href="#" data-modal="foo">Custom layers</a>
-
-      <a class="js-modal-toggle btn btn-small btn-transparent icon-ui-play" href="#" data-modal="foo">Tutorial</a>
-      <a class="js-modal-toggle btn btn-small btn-transparent icon-ui-question" href="#" data-modal="foo">Ayuda</a>
-
-
-    </div>
-    <iframe id="agol" src="http://hhkaos2.maps.arcgis.com/home/webmap/viewer.html?webmap=0ad39d05c3834649bb48397afc56a6b2&embedded=1&hide=bm,share,analysis,measure&locale=en-us"></iframe>
+    <iframe id="agol" src="cluster-heatmaps"></iframe>
 
     <!-- get calcite-web js from the cdn (use latest version) -->
     <script src="https://s3-us-west-1.amazonaws.com/patterns.esri.com/files/calcite-web/1.0.0-beta.31/js/calcite-web.min.js"></script>

@@ -190,12 +190,13 @@
           }
 
           var htmlOutput = optionTmpl.render(data);
-          $('#dropdown-animation').append(htmlOutput);
+          $('#dropdown-animation, #dropdown-cluster').append(htmlOutput);
 
           htmlOutput = template.render(data);
           $('#animations').append(htmlOutput);
 
         }
+
         $('#dropdown-animation a').click(function(e){
           e.preventDefault();
           var id = $(this).data('id');
@@ -203,6 +204,8 @@
           $('#content-'+id).show();
         });
 
+        $('#dropdown-cluster a').click(function(e){
+        });
 
       });
     });
@@ -221,6 +224,7 @@
           <nav class="top-nav-list" role="navigation" aria-labelledby="topnav">
             <a class="top-nav-link " href="panel-extension.html">Editor de web map</a>
             <a class="top-nav-link is-active" href="panel-params.html">Otros parámetros</a>
+            <a class="top-nav-link " href="panel-extension-renderers.html">Renderizadores</a>
             <a class="top-nav-link " href="panel-extension-form.html">Formulario</a>
           </nav>
           <!-- user specific dropdowns -->
@@ -237,8 +241,8 @@
     <div class="column-8">
       <div class="leader-1">
         <aside class="js-accordion accordion trailer-1">
-          <div class="accordion-section is-active">
-            <h4 class="accordion-title">Simbología (avanzado)</h4>
+          <div class="accordion-section">
+            <h4 class="accordion-title">Simbología (hardcoded)</h4>
             <div class="accordion-content">
               <div class="padding-left-1 leader-1 padding-right-1 trailer-1">
                 <a class="btn btn-fill" href="https://developers.arcgis.com/javascript/3/samples/playground/" target="_blank">Symbol Playground</a>

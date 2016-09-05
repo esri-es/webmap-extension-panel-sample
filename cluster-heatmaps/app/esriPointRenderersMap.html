@@ -1,0 +1,42 @@
+<esri-point-renderers-map
+	id="map"
+	register-as="registeredPointRenderersMapDirective"
+	basemap-active="basemapActive"
+	heatmap-renderer-params="heatmapRendererParams"
+	cluster-tolerance="clusterTolerance"
+	renderer-active="{{rendererActive}}">
+</esri-point-renderers-map>
+
+
+
+<div class="map-layer-controls" ng-cloak>
+	<div md-whiteframe="2" layout="column" layout-padding>
+		<div md-whiteframe="2" layout="column" layout-margin layout-padding>
+			<p class="md-caption">Layer: Accidental Deaths</p>
+			<md-switch ng-model="rendererActive" aria-label="Map Renderer Switch" ng-false-value="'heatmap'" ng-true-value="'cluster'" class="md-primary">
+				<span ng-class="{bold: (rendererActive === 'heatmap')}">Heatmap</span>
+				<span> or </span>
+				<span ng-class="{bold: (rendererActive === 'cluster')}">Cluster</span>
+			</md-switch>
+
+			<div ng-show="(rendererActive === 'heatmap')">
+				<p class="md-caption">Blur radius: {{heatmapRendererParams.blurRadius}}</p>
+				<md-slider flex md-discrete ng-model="heatmapRendererParams.blurRadius" step="1" min="0" max="20" aria-label="Blur Radius"></md-slider>
+				<p class="md-caption">Min pixel intensity: {{heatmapRendererParams.minPixelIntensity}}</p>
+				<md-slider flex md-discrete ng-model="heatmapRendererParams.minPixelIntensity" step="5" min="0" max="100" aria-label="Min Pixel Intensity"></md-slider>
+				<p class="md-caption">Max pixel intensity: {{heatmapRendererParams.maxPixelIntensity}}</p>
+				<md-slider flex md-discrete ng-model="heatmapRendererParams.maxPixelIntensity" step="5" min="0" max="100" aria-label="Max Pixel Intensity"></md-slider>
+			</div>
+
+			<div ng-show="(rendererActive === 'cluster')">
+				<p class="md-caption">Clustering distance:</p>
+				<p class="md-caption">{{clusterTolerance}} pixels</p>
+				<md-slider flex ng-model="clusterTolerance" min="40" max="300" aria-label="Cluster Tolerance"></md-slider>
+			</div>
+		</div>
+
+		<div md-whiteframe="2" layout="column" layout-margin layout-padding>
+			<button class=" md-button md-primary md-raised">Save</button>
+		</div>
+	</div>
+</div>

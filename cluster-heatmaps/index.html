@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html ng-app="AngularEsriPlaygroundApp">
+<head>
+	<title>Angular Esri Playground</title>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta charset="utf-8">
+
+	<!-- esri css -->
+	<link rel="stylesheet" href="//js.arcgis.com/3.15/esri/css/esri.css">
+
+	<!-- angular material css -->
+	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.css">
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+
+	<style type="text/css">
+		.router-content, #map, .map {
+			padding: 0;
+			margin: 0;
+			height: 100%;
+		}
+		.basemap-comparison-map, .basemap-comparison-map .map {
+			/*width: 300px !important;*/
+			/*height: 100% !important;*/
+		}
+		.title-bar {
+			width: 100%;
+			position: absolute;
+			top: 0;
+			z-index: 10;
+			background-color: rgba(63, 81, 181, 0.7) !important;
+			color: rgba(255, 255, 255, 1) !important;
+		}
+		.map-layer-controls {
+			width: 260px;
+			position: absolute;
+			top: 15px;
+			right: 20px;
+			background-color: white;
+			z-index: 10;
+		}
+		.map-search-control {
+			position: absolute;
+			top: 15px;
+			left: 70px;
+			background-color: white;
+			z-index: 10;
+		}
+		.esriSimpleSlider, .esriSimpleSlider div {
+			border-radius: 0;
+			border: 0;
+			top: 15px;
+		}
+		p.md-caption {
+			margin-bottom: -7px;
+			color: #777;
+		}
+		.bold {
+			font-weight: bold;
+		}
+		md-grid-tile-footer.ng-scope {
+			background: rgba(0, 0, 0, 0.4);
+		}
+	</style>
+</head>
+<body ng-controller="AngularEsriPlaygroundController">
+
+
+	<!-- router page content -->
+	<div class="router-content" ng-view=""></div>
+
+	<!-- JavaScript -->
+	<!-- Dojo & Esri JSAPI -->
+	<script>
+			var appPath = location.pathname.replace(/\/[^\/]+$/, "");
+			var dojoConfig = {
+				async: true,
+				packages: [{
+					name: 'lib',
+					location: appPath + 'lib'
+				}]
+			};
+	</script>
+	<script src="//js.arcgis.com/3.15compact"></script>
+
+	<!-- Angular & Angular Material Dependencies -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-aria.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angular_material/1.0.5/angular-material.min.js"></script>
+
+	<!-- angular-esri-map library -->
+	<script src="lib/angular/angular-esri-core.min.js"></script>
+
+	<!-- this app's Angular modules -->
+	<script src="app/app.js"></script>
+	<script src="app/appConfig.js"></script>
+	<script src="app/esriPointRenderersMap.js"></script>
+	<script src="app/esriBasemapComparison.js"></script>
+	<script src="app/esriGeocode-mdAutocomplete.js"></script>
+</body>
+</html>
