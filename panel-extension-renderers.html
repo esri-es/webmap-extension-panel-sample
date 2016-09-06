@@ -24,6 +24,15 @@
       background-color: white
     }
     </style>
+    <script>
+      var aux, b, h;
+      aux = location.href.split("/");
+      aux.pop();
+      b = document.createElement("base");
+      b.href = aux.join("/");
+      h = document.getElementsByTagName("head")[0];
+      h.appendChild(b);
+    </script>
   </head>
   <body>
     <header class="top-nav">

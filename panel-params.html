@@ -69,13 +69,13 @@
           packages: [
               {
                   name: 'jquery',
-                  location: 'http://ajax.googleapis.com/ajax/libs/jquery/1.11.1',
+                  location: '//ajax.googleapis.com/ajax/libs/jquery/1.11.1',
                   main: 'jquery'
               }
           ],
           paths:{
-            "jquery":"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1",
-            "jsrender":"http://www.jsviews.com/download/jsrender"
+            "jquery":"//ajax.googleapis.com/ajax/libs/jquery/1.11.1",
+            "jsrender":"//www.jsviews.com/download/jsrender"
           },
           shim:{
             deps:["jquery"], // jquery.highlight dependeps on jquery so it will load after jquery has been loaded
@@ -151,7 +151,7 @@
         }
       });
 
-      var url = 'http://www.arcgis.com/sharing/rest/content/items/' + webmapId + '/data';
+      var url = '//www.arcgis.com/sharing/rest/content/items/' + webmapId + '/data';
 
       applyMarker = function(layerId){
         var l = map.getLayer(layerId);
