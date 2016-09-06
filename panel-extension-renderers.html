@@ -24,15 +24,7 @@
       background-color: white
     }
     </style>
-    <script>
-      var aux, b, h;
-      aux = location.href.split("/");
-      aux.pop();
-      b = document.createElement("base");
-      b.href = aux.join("/") + '/';
-      h = document.getElementsByTagName("head")[0];
-      h.appendChild(b);
-    </script>
+
   </head>
   <body>
     <header class="top-nav">
@@ -62,6 +54,13 @@
 
     <iframe id="agol" src="cluster-heatmaps"></iframe>
 
+    <script>
+      var aux, b, i;
+      aux = location.href.split("/");
+      aux.pop();
+      i = document.getElementById("agol");
+      i.setAttribute('src', aux.join("/") + '/cluster-heatmaps/#/point-renderers')
+    </script>
     <!-- get calcite-web js from the cdn (use latest version) -->
     <script src="https://s3-us-west-1.amazonaws.com/patterns.esri.com/files/calcite-web/1.0.0-beta.31/js/calcite-web.min.js"></script>
 
