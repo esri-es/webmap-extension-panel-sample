@@ -29,7 +29,7 @@
       aux = location.href.split("/");
       aux.pop();
       b = document.createElement("base");
-      b.href = aux.join("/");
+      b.href = aux.join("/") + '/';
       h = document.getElementsByTagName("head")[0];
       h.appendChild(b);
     </script>
